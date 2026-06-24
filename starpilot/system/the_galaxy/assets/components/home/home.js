@@ -151,7 +151,7 @@ function fallbackDashboard(data, unit) {
       longestUndistractedDrive: { value: "0.0 hours", detail: "No clean drives" },
       cleanDriveStreak: { value: "0 drives", detail: "No clean drives" },
     },
-    device: { status: "Parked", online: true, uptimeSeconds: null, cpuTempC: null },
+    device: { status: "Parked", online: true, uptimeSeconds: null, cpuTempC: null, powerDrawW: null },
     storage: {
       freeBytes: 0,
       usedBytes: 0,
@@ -428,6 +428,9 @@ function renderVitals(device) {
   const cpu = device.cpuTempC == null ? "unknown" : `${formatInt(device.cpuTempC)} C`;
   const lanIp = device.lanIp || "unknown";
   const networkName = device.networkName || "No wireless connectivity";
+  const power = device.powerDrawW == null ? "unknown" : `${formatOneDecimal(device.powerDrawW)} W`;
+  const powerUsed = device.powerUsedUwh == null ? "unknown" : `${formatOneDecimal(device.powerUsedUwh / 1000000)} Wh`;
+  const batteryCapacity = device.carBatteryCapacityUwh == null ? "unknown" : `${formatOneDecimal(device.carBatteryCapacityUwh / 1000000)} Wh`;
   return `
     <section class="dashboard-card dashboard-device-card">
       <h2>Vitals</h2>
@@ -437,6 +440,9 @@ function renderVitals(device) {
         <div><span>Network</span><strong>${escapeHtml(networkName)}</strong></div>
         <div><span>Uptime</span><strong>${escapeHtml(uptime)}</strong></div>
         <div><span>CPU temp</span><strong>${escapeHtml(cpu)}</strong></div>
+        <div><span>Power usage</span><strong>${escapeHtml(power)}</strong></div>
+        <div><span>Power used</span><strong>${escapeHtml(powerUsed)}</strong></div>
+        <div><span>Battery capacity</span><strong>${escapeHtml(batteryCapacity)}</strong></div>
       </div>
     </section>
   `;
