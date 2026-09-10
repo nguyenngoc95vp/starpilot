@@ -34,6 +34,7 @@ DESCRIPTIONS = {
   "RecordAudio": tr_noop("Record and store microphone audio while driving. The audio will be included in the dashcam video in comma connect."),
   "TorqueInterceptorEnabled": tr_noop("Enable the torque interceptor to control the steering wheel."),
   "RadarInterceptorEnabled": tr_noop("Enable if you have installed the radar Iterceptor."),
+  "RadarEmulationEnabled": tr_noop("Silence the stock radar and let openpilot control gas and brake. No extra hardware required. Do not enable together with the Radar Interceptor."),
   "NoMRCC": tr_noop("Enable if your car does not have stock MRCC."),
   "NoFSC": tr_noop("Enable if your car does not have stock FSC."),
   "ManualTransmission": tr_noop("Enable if your car has a manual transmission."),
@@ -111,6 +112,12 @@ class TogglesLayout(Widget):
       "TorqueInterceptorEnabled": (
         lambda: tr("Enable Torque Interceptor"),
         DESCRIPTIONS["TorqueInterceptorEnabled"],
+        "chffr_wheel.png",
+        True,
+      ),
+      "RadarEmulationEnabled": (
+        lambda: tr("Enable Radar Emulation"),
+        DESCRIPTIONS["RadarEmulationEnabled"],
         "chffr_wheel.png",
         True,
       ),

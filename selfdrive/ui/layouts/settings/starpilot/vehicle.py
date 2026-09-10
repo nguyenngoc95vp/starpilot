@@ -430,6 +430,12 @@ class VehicleSettingsManagerView(PanelManagerView):
         "set_state": lambda s: self._controller._on_toggle("TorqueInterceptorEnabled"),
       })
       toggles.append({
+        "title": tr("Enable Radar Emulation"),
+        "subtitle": tr("Silence the stock radar and let openpilot control gas and brake. No extra hardware. Do not use with a Radar Interceptor."),
+        "get_state": lambda: self._controller._params.get_bool("RadarEmulationEnabled"),
+        "set_state": lambda s: self._controller._on_toggle("RadarEmulationEnabled"),
+      })
+      toggles.append({
         "title": tr("Enable Radar Interceptor"),
         "subtitle": tr("Enable if you have installed a radar interceptor."),
         "get_state": lambda: self._controller._params.get_bool("RadarInterceptorEnabled"),

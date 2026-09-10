@@ -65,6 +65,9 @@ class MazdaSafetyFlags(IntFlag):
   NO_FSC = 32
   NO_MRCC = 64
   MANUAL_TRANSMISSION = 128
+  # Software radar emulation: no hardware interceptor, the stock radar is silenced
+  # over UDS and openpilot impersonates it. Mutually exclusive with RADAR_INTERCEPTOR.
+  RADAR_EMULATION = 256
 
 
 @dataclass

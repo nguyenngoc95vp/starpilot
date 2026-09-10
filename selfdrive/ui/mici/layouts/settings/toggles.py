@@ -29,6 +29,7 @@ class TogglesLayoutMici(NavScroller):
     record_mic = BigParamControl("record & upload mic audio", "RecordAudio", toggle_callback=restart_needed_callback)
     enable_openpilot = BigParamControl("enable openpilot", "OpenpilotEnabledToggle", toggle_callback=restart_needed_callback)
     enable_torque_interceptor = BigParamControl("torque interceptor", "TorqueInterceptorEnabled", toggle_callback=restart_needed_callback)
+    enable_radar_emulation = BigParamControl("radar emulation", "RadarEmulationEnabled", toggle_callback=restart_needed_callback)
     enable_radar_interceptor = BigParamControl("radar interceptor", "RadarInterceptorEnabled", toggle_callback=restart_needed_callback)
     enable_no_mrcc = BigParamControl("no stock MRCC", "NoMRCC", toggle_callback=restart_needed_callback)
     enable_no_fsc = BigParamControl("no stock FSC", "NoFSC", toggle_callback=restart_needed_callback)
@@ -46,6 +47,7 @@ class TogglesLayoutMici(NavScroller):
       record_mic,
       enable_openpilot,
       enable_torque_interceptor,
+      enable_radar_emulation,
       enable_radar_interceptor,
       enable_no_mrcc,
       enable_no_fsc,
@@ -64,6 +66,7 @@ class TogglesLayoutMici(NavScroller):
       ("RecordAudio", record_mic),
       ("OpenpilotEnabledToggle", enable_openpilot),
       ("TorqueInterceptorEnabled", enable_torque_interceptor),
+      ("RadarEmulationEnabled", enable_radar_emulation),
       ("RadarInterceptorEnabled", enable_radar_interceptor),
       ("NoMRCC", enable_no_mrcc),
       ("NoFSC", enable_no_fsc),

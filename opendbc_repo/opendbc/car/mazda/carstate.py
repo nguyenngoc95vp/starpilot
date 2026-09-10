@@ -25,6 +25,8 @@ class CarState(CarStateBase):
     self.params = CarControllerParams(CP)
 
     self.distance_button = 0
+    # physical RES / SET+ press on the wheel; used by the radar emulation HOLD release
+    self.accel_button = 0
     self.ti_ramp_down = False
     self.ti_version = 1
     self.ti_state = TI_STATE.RUN
@@ -47,6 +49,8 @@ class CarState(CarStateBase):
 
     prev_distance_button = self.distance_button
     self.distance_button = cp.vl["CRZ_BTNS"]["DISTANCE_LESS"]
+    # CX-9 has a dedicated RES button; some Mazdas emit SET_P for the wheel "+" instead
+    self.accel_button = int(cp.vl["CRZ_BTNS"]["RES"] == 1 or cp.vl["CRZ_BTNS"]["SET_P"] == 1)
 
     self.parse_wheel_speeds(ret,
       cp.vl["WHEEL_SPEEDS"]["FL"],
@@ -118,7 +122,16 @@ class CarState(CarStateBase):
     ret.cruiseState.standstill = ret.standstill
     ret.cruiseState.speed = cp.vl["CRZ_EVENTS"]["CRZ_SPEED"] * CV.KPH_TO_MS
 
-    if self.CP.flags & MazdaSafetyFlags.RADAR_INTERCEPTOR:
+    if self.CP.flags & MazdaSafetyFlags.RADAR_EMULATION:
+      # The stock radar is suppressed, so CRZ_CTRL is gone from the bus. Derive MRCC
+      # state from PEDALS instead: ACC_OFF is asserted while MRCC is armed but not
+      # controlling, ACC_ACTIVE once stock ACC takes over. Treating either as
+      # "available" stops MADS reading a stock ACC engage as the main switch going off.
+      acc_armed = cp.vl["PEDALS"]["ACC_OFF"] == 1
+      acc_active = cp.vl["PEDALS"]["ACC_ACTIVE"] == 1
+      ret.cruiseState.available = acc_armed or acc_active
+      ret.cruiseState.enabled = acc_active
+    elif self.CP.flags & MazdaSafetyFlags.RADAR_INTERCEPTOR:
       self.crz_info = copy.copy(cp_cam.vl["CRZ_INFO"])
       self.crz_cntr = copy.copy(cp_cam.vl["CRZ_CTRL"])
       self.cp_cam = cp_cam
